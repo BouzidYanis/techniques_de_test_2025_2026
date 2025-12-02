@@ -16,7 +16,7 @@ def test_cas_simple():
     point_set.n_points.return_value= 4
     t= triangulate(point_set.get_points())
     assert len(t) == 2
-    assert t == [ (0,1,2), (1,2,3) ]  # Exemple attendu
+    assert t == [ (0,1,2), (1,2,3) ] 
 
 def test_cas_simple2():
     point_set= Mock()

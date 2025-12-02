@@ -2,10 +2,6 @@ import pytest
 import time
 import random
 
-# triangulation = pytest.importorskip("triangulator.triangulation", reason="triangulator.triangulation introuvable")
-# triangulate = getattr(triangulation, "triangulate", None)
-# if triangulate is None:
-#     pytest.skip("fonction triangulate introuvable", allow_module_level=True)
 
 @pytest.mark.perf
 def test_triangulation_time_small():
@@ -27,3 +23,16 @@ def test_triangulation_time_medium():
     elapsed = time.perf_counter() - start
     # Tolérance large, ajustez selon votre cible
     assert elapsed < 30.0, f"Triangulation medium lente: {elapsed:.2f}s"
+
+@pytest.mark.perf
+def test_triangulation_time_large():
+    random.seed(2)
+    N = 50000 
+    pts = [(random.random()*1000.0, random.random()*1000.0) for _ in range(N)]
+    
+    start = time.perf_counter()
+    triangulate(pts)
+    elapsed = time.perf_counter() - start
+    
+    # Seuil indicatif, à ajuster selon la machine
+    assert elapsed < 60.0, f"Triangulation large ({N} pts) trop lente: {elapsed:.2f}s"
