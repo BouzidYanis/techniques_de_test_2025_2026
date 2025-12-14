@@ -1,21 +1,24 @@
-import os
-import time
+"""Tests de performance pour la conversion binaire PointSet et Triangles."""
+
 import random
-import json
-import math
-import pytest
 import struct
+import time
+
+import pytest
+
+from TP.Code.serializers import bytes_to_pointset, triangles_to_bytes
+
 
 def generate_random_points(n, seed=0):
+    """Génère une liste de n points aléatoires dans le carré [0,1000]x[0,1000]."""
     rnd = random.Random(seed)
     return [(rnd.random() * 1000.0, rnd.random() * 1000.0) for _ in range(n)]
 
-
 def generate_grid_triangles(nx, ny):
-    """
-    Génère une grille de points nx * ny et construit une liste de triangles
+    """Génère une grille de points nx * ny et construit une liste de triangles.
+
     couvrant la grille (2 triangles par cellule), ainsi que la liste des points.
-    Retour: points, triangles
+    Retour: points, triangles.
     """
     points = []
     for j in range(ny):
@@ -40,7 +43,7 @@ def generate_grid_triangles(nx, ny):
 
 @pytest.mark.perf
 def test_bytes_to_pointset_time_small():
-
+    """Test de performance de la désérialisation d'un PointSet de petite taille."""
     pts = generate_random_points(1000, seed=12345)
 
     point_bytes = struct.pack('I', len(pts))
@@ -51,7 +54,7 @@ def test_bytes_to_pointset_time_small():
         
     # mesurer désérialisation
     t0 = time.perf_counter()
-    pts2 = bytes_to_pointset(point_bytes)
+    bytes_to_pointset(point_bytes)
     t1 = time.perf_counter()
     deser_times = (t1 - t0)
     
@@ -59,7 +62,7 @@ def test_bytes_to_pointset_time_small():
 
 @pytest.mark.perf
 def test_bytes_to_pointset_time_meduim():
-
+    """Test de performance de la désérialisation d'un PointSet de taille moyenne."""
     pts = generate_random_points(5000, seed=12345)
 
     point_bytes = struct.pack('I', len(pts))
@@ -70,7 +73,7 @@ def test_bytes_to_pointset_time_meduim():
         
     # mesurer désérialisation
     t0 = time.perf_counter()
-    pts2 = bytes_to_pointset(point_bytes)
+    bytes_to_pointset(point_bytes)
     t1 = time.perf_counter()
     deser_times = (t1 - t0)
     
@@ -78,7 +81,7 @@ def test_bytes_to_pointset_time_meduim():
 
 @pytest.mark.perf
 def test_bytes_to_pointset_time_large():
-
+    """Test de performance de la désérialisation d'un PointSet de grande taille."""
     pts = generate_random_points(20000, seed=12345)
 
     point_bytes = struct.pack('I', len(pts))
@@ -89,7 +92,7 @@ def test_bytes_to_pointset_time_large():
         
     # mesurer désérialisation
     t0 = time.perf_counter()
-    pts2 = bytes_to_pointset(point_bytes)
+    bytes_to_pointset(point_bytes)
     t1 = time.perf_counter()
     deser_times = (t1 - t0)
     
@@ -97,13 +100,14 @@ def test_bytes_to_pointset_time_large():
 
 @pytest.mark.perf
 def test_triangles_to_bytes_small():
+    """Test de performance de la sérialisation d'un ensemble de triangles de petite taille."""
     points, triangles_list = generate_grid_triangles(50, 40)
     n_triangles = len(triangles_list)
     n_points = len(points)
     
     
     t0 = time.perf_counter()
-    b = triangles_to_bytes(n_triangles,triangles_list,n_points,points)
+    triangles_to_bytes(n_triangles,triangles_list,n_points,points)
     t1 = time.perf_counter()
     ser_times = (t1 - t0)
 
@@ -111,12 +115,13 @@ def test_triangles_to_bytes_small():
 
 @pytest.mark.perf
 def test_triangles_to_bytes_large():
+    """Test de performance de la sérialisation d'un ensemble de triangles de grande taille."""
     points, triangles_list = generate_grid_triangles(100, 100)
     n_triangles = len(triangles_list)
     n_points = len(points)
     
     t0 = time.perf_counter()
-    b = serialize_triangles(points, triangles)
+    triangles_to_bytes(n_triangles, triangles_list, n_points, points)
     t1 = time.perf_counter()
     ser_times = (t1 - t0)
 

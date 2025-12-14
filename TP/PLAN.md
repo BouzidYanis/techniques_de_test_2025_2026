@@ -6,6 +6,9 @@ Vérifier que l’algorithme de triangulation produit des résultats corrects po
 <!-- #### 1.1. Tests de la logique de triangulation -->
 - **Cas simple :** Vérifier que les triangles retounés sont correctes après lui avoir donner un `PointSet` contenant plus que 3 points (pas de chauvechement, couverture totales des points).
 - **Cas nominal :** Vérifier que la triangulation d'un `PointSet` contenant 3 points retourne 1 triangle.
+- **Cas avec coordonnées négatives :** Vérifier que la triangulation d'un `PointSet` avec des coordonnées négatives fonctionne correctement.
+- **Cas avec des grandes coordonnées :** Vérifier que la triangulation d'un `PointSet` avec des coordonnées très grandes (ex : 1e9) fonctionne correctement.
+- **Cas avec des petites coordonnées :** Vérifier que la triangulation d'un `PointSet` avec des coordonnées très petites (ex : 1e-9) fonctionne correctement.
 - **Testes d'erreurs :** 
 - - **Cas limite :** Vérifier que la triangulation d'un `PointSet` contenant moins de 3 points retourne une erreur avec le message "nombre de points n'est pas suffisant".
 - - **Cas vide :** Vérifier que la triangulation d'un `PointSet` vide retourne une erreur avec le message "PointSet vide".
